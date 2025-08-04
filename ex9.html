@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <button onclick="run('heads')">heads</button>
+    <button onclick="run('tails')">tails</button>
+    <p class="display"></p>
+    <input placeholder="Name" class="userName" onkeyup="
+       if(event.key=='Enter')  { Name(userName.value)} 
+       else {
+          objDisp.inputDisp = userName.value ;
+          localStorage.setItem('display',JSON.stringify(objDisp)) ;
+       }
+    "><button onclick="Name(userName.value)">Submit</button>
+    <p class="display-name"></p>
+
+
+    <input class ="liveInput" onkeyup="update(lnLive.value,'.liveUpdate')">
+    <p class="liveUpdate"></p>
+    <script>
+
+
+      var gameDisp = document.querySelector('.display');
+      const userName = document.querySelector('.userName');
+      var nameDisp = document.querySelector('.display-name');
+      const objDisp = JSON.parse(localStorage.getItem('display')) || {gameDisp : gameDisp.innerText , nameDisp :nameDisp.innerText , inputDisp : userName.value} ;
+      gameDisp.innerText = objDisp.gameDisp  ;
+      nameDisp.innerText = objDisp.nameDisp ;
+      userName.value = objDisp.inputDisp ;
+
+      function run(ch){
+        uploadScreenStorage('gameDisp',ch)
+      }
+      function Name(ch){
+        ch = ch || '...?' ;
+        uploadScreenStorage('nameDisp',ch)
+      }
+      function uploadScreenStorage(element,ch){
+        window[element].innerText = `Your name is ${ch}` ;
+        objDisp[element] = `Your name is ${ch}` ;
+        objDisp.inputDisp = (ch=='...?' ||  element =='gameDisp')? '' : ch ;
+        localStorage.setItem('display',JSON.stringify(objDisp)) ;
+        console.log(objDisp)
+      }
+
+      function update (info,toUpdate){
+        document.querySelector(toUpdate).innerText = info ;
+      }
+
+
+
+
+
+      const lnLive = document.querySelector('.liveInput') ;
+
+    </script>
+  </body>
+</html>
