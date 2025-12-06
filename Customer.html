@@ -449,7 +449,7 @@
             fc.firstElementChild.classList.remove('first-transaction') ;
           }
           const color = (type=='deposit' || type=='loanDeposit')? 'red':'green';
-          const im = (type.toUpperCase() == "LOANDEPOSIT" || type.toUpperCase() == "DEPOSIT") ? "depositIcon.png" : "WithdrawIcon.png";
+          const im = (type.toUpperCase() == "LOANDEPOSIT" || type.toUpperCase() == "DEPOSIT") ? "deposit" : "Withdraw";
           const htmlStr = `
           <div class="transaction-container" data-id="${newId}">
                   <div class="transaction first-transaction ${ds}">
