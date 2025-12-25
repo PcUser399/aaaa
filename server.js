@@ -39,25 +39,29 @@ app.listen(PORT, "0.0.0.0", () => {
 });
 
 function sendDataToCppAndReceiveItAfterCppOperation(cppPath, data, res) {
-  console.log(data);
   const cpp = spawn(cppPath);
+  console.log("succesfully spawned cpp file");
   let finished = false;
 
   let output = "";
 
   cpp.stdout.on("data", (data) => (output += data.toString()));
+  console.log("succesfully std::cout");
   cpp.stderr.on("data", (data) => console.log(`C++ stderr: ${data}`));
+  console.log("succesfully std::cerr");
 
   cpp.on("close", (code) => {
     finished = true;
+    clearTimeout(timeout);
     console.log(`C++ exited with code ${code}`);
     if (res) res.json({ result: output.trim() });
   });
 
   cpp.stdin.write(JSON.stringify(data) + "\n");
+  console.log("succesfully std::cin");
   cpp.stdin.end();
 
-  setTimeout(() => {
+  const timeout = setTimeout(() => {
     if (!finished) {
       cpp.kill();
       finished = true;
