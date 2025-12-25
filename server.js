@@ -39,16 +39,25 @@ app.listen(PORT, "0.0.0.0", () => {
 });
 
 function sendDataToCppAndReceiveItAfterCppOperation(cppPath, data, res) {
-  const cpp = spawn(cppPath);
-  console.log("succesfully spawned cpp file");
+  const cpp = spawn(cppPath, [], { stdio: ["pipe", "pipe", "pipe"] });
   let finished = false;
-
   let output = "";
 
+  const timeout = setTimeout(() => {
+    if (!finished) {
+      cpp.kill();
+      finished = true;
+      console.log("C++ TimeOut Error");
+      if (res) res.status(504).json({ error: "C++ timeout" });
+    }
+  }, 10000);
+
   cpp.stdout.on("data", (data) => (output += data.toString()));
-  console.log("succesfully std::cout");
   cpp.stderr.on("data", (data) => console.log(`C++ stderr: ${data}`));
-  console.log("succesfully std::cerr");
+
+  cpp.stdin.on("error", (err) => {
+    console.error("C++ stdin error:", err);
+  });
 
   cpp.on("close", (code) => {
     finished = true;
@@ -57,15 +66,15 @@ function sendDataToCppAndReceiveItAfterCppOperation(cppPath, data, res) {
     if (res) res.json({ result: output.trim() });
   });
 
-  cpp.stdin.write(JSON.stringify(data) + "\n");
-  console.log("succesfully std::cin");
-  cpp.stdin.end();
-
-  const timeout = setTimeout(() => {
-    if (!finished) {
-      cpp.kill();
-      finished = true;
-      console.log("C++ TimeOut Error");
+  // Only write stdin if process is still alive
+  if (!cpp.stdin.destroyed) {
+    try {
+      cpp.stdin.write(JSON.stringify(data) + "\n");
+      cpp.stdin.end();
+    } catch (err) {
+      console.error("Write to C++ stdin failed:", err);
+      if (!finished && res)
+        res.status(500).json({ error: "Failed to write to C++" });
     }
-  }, 10000);
+  }
 }
