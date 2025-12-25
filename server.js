@@ -26,7 +26,7 @@ sendDataToCppAndReceiveItAfterCppOperation(cppFile, {
   command: "check new month",
   info: String(month),
   object: {},
-}); // rajaaha kima kenet
+}); // rajaaha kima kenet !!!!!!!!
 
 app.post("/submit", (req, res) => {
   sendDataToCppAndReceiveItAfterCppOperation(cppFile, req.body, res);
