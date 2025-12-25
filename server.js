@@ -23,8 +23,7 @@ const cppFile = process.platform === "win32"
 
 // Initial check
 let month = new Date().getMonth();
-// sendDataToCppAndReceiveItAfterCppOperation(cppFile, {command:"check new month", info:String(month), object:{}}); // rajaaha kima kenet 
-sendDataToCppAndReceiveItAfterCppOperation(cppFile, {command:"Load All Employees" , info:"10" , object :{}}  ); // rajaaha kima kenet 
+sendDataToCppAndReceiveItAfterCppOperation(cppFile, {command:"check new month", info:String(month), object:{}}); // rajaaha kima kenet 
 
 
 
@@ -50,7 +49,6 @@ function sendDataToCppAndReceiveItAfterCppOperation(cppPath, data, res) {
   cpp.on("close", code => {
     finished = true ;
     console.log(`C++ exited with code ${code}`);
-    console.log(output);
     if (res) res.json({ result: output.trim() });
   });
 
