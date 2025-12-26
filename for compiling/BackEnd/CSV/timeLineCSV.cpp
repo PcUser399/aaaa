@@ -401,5 +401,15 @@ namespace timeLineCSV
         write.close();
     }
 
+    void addLine(string CsvFileName , string line){
+        ofstream write(PATH + "/BackEnd/Data/" + CsvFileName , ios::app);
+        if (!write.is_open()) {
+            cerr << "Error opening file\n";
+            return;
+        }   
+        write<<line+"\n";
+        write.close();
+    }
+
 }
 

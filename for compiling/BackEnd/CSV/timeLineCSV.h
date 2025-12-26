@@ -36,6 +36,7 @@ namespace timeLineCSV
     // last month file
     std::string getLastMonth();
     void updateLastMonth(int Month);
+    void addLine (string CsvFileName , string line );
 }
 
 #endif

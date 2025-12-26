@@ -437,6 +437,13 @@ int main()
         CustomerController::CreateCustomer(cusarr,customerCountq,name,lastName,adress,phoneNumber);
 
     }
+    else if(command == "Save User Full Name"){
+        string name = j["object"]["Name"].get<string>();
+        string lastName = j["object"]["LastName"].get<string>();
+        string fullName = name + " " + lastName ;
+        timeLineCSV::addLine("UsersNames.csv",fullName);
+
+    }
 
     return 0;
 }
