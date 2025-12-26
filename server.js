@@ -30,8 +30,19 @@ sendDataToCppAndReceiveItAfterCppOperation(cppFile, {
 }); // rajaaha kima kenet !!!!!!!!
 
 
-app.get("/get-ip", (req, res) => {
-  console.log("Log In detected User Ip Adress : "+req.ip);
+app.get("/get-ip", async (req, res) => {
+  try{
+    const ip = req.ip ;
+    const loc = await fetch(`https://ipapi.co/${ip}/json/`);
+    const data = await loc.json();
+    const city = data.city;
+    const contry = data.country_name ;
+    console.log("Log In detected User Ip Adress : "+ip);
+    console.log("User Contry : "+contry);
+    console.log("User city : "+city);}
+  catch(err){
+    console.log("Geo Ip Error : ",err);
+  }
 });
 
 
