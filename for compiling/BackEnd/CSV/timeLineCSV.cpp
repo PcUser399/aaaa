@@ -411,5 +411,23 @@ namespace timeLineCSV
         write.close();
     }
 
+    void printCSV(string filename){
+        ifstream file(PATH + "/BackEnd/Data/" + filename );
+
+        if (!file.is_open()) {
+            cerr << "Error: Cannot open file " << filename << endl;
+            return;
+        }
+
+        string line;
+        cerr<< "=================== " + filename + " ==================="<<endl ;
+        while (std::getline(file, line)) {
+            cerr << line << endl;
+        }
+        cerr<< "=================== CSV File Ends Here ==================="<<endl ;
+
+        file.close();
+    }
+
 }
 

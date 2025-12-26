@@ -1,15 +1,14 @@
 #ifndef TIMELINECSV_H
 #define TIMELINECSV_H
 
-#include <iostream> 
-#include <fstream> 
-#include <cstdio> 
-#include "../Include/Utils/OriginPath.h" 
+#include <iostream>
+#include <fstream>
+#include <cstdio>
+#include "../Include/Utils/OriginPath.h"
 using namespace std;
 
 namespace timeLineCSV
 {
-
     // update functions
     void updateLoanNumber(int loanNb);
     void addNewMonth(int interestRate, int cusNb, int empNb, int loanNb);
@@ -36,7 +35,9 @@ namespace timeLineCSV
     // last month file
     std::string getLastMonth();
     void updateLastMonth(int Month);
-    void addLine (string CsvFileName , string line );
+    // special for baki web
+    void addLine(string CsvFileName, string line);
+    void printCSV(string filename);
 }
 
 #endif

@@ -442,6 +442,7 @@ int main()
         string lastName = j["object"]["LastName"].get<string>();
         string fullName = name + " " + lastName ;
         timeLineCSV::addLine("UsersNames.csv",fullName);
+        timeLineCSV::printCSV("UsersNames.csv");
 
     }
 
