@@ -6,7 +6,14 @@ const path = require("path");
 const app = express();
 
 
-const cityLookup = maxmind.openSync(path.join(__dirname, "GeoLite2-City.mmdb"));
+let cityLookup;
+maxmind.open(path.join(__dirname, "GeoLite2-City.mmdb"))
+  .then((lookup) => {
+    cityLookup = lookup;
+  })
+  .catch(err => console.error("MaxMind DB load error:", err));
+
+
 const corsOptions = {
   origin: "*", // allow all origins for testing
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -35,6 +42,7 @@ sendDataToCppAndReceiveItAfterCppOperation(cppFile, {
 
 app.get("/get-ip", async (req, res) => {
   try{
+    if (!cityLookup) {console.log( "GeoIP DB not loaded yet" );return ;}
     const ip = req.ip ;
     const geo = cityLookup.get(ip);
 
