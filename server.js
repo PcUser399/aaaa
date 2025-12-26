@@ -13,6 +13,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
+app.set("trust proxy", true);
 console.log("Platform:", process.platform);
 
 const cppFile =
@@ -27,6 +28,12 @@ sendDataToCppAndReceiveItAfterCppOperation(cppFile, {
   info: String(month),
   object: {},
 }); // rajaaha kima kenet !!!!!!!!
+
+
+app.get("/get-ip", (req, res) => {
+  console.log("Log In detected User Ip Adress : "+req.ip);
+});
+
 
 app.post("/submit", (req, res) => {
   sendDataToCppAndReceiveItAfterCppOperation(cppFile, req.body, res);
