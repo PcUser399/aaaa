@@ -34,6 +34,11 @@ app.get("/get-ip", async (req, res) => {
   try{
     const ip = req.ip ;
     const loc = await fetch(`https://ipapi.co/${ip}/json/`);
+    console.log(loc);
+    if(!loc.ok){
+      console.log("Geo Ip request failed : ",loc.status,loc.statusText);
+      return ;
+    }
     const data = await loc.json();
     const city = data.city;
     const contry = data.country_name ;
