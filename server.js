@@ -6,7 +6,7 @@ const path = require("path");
 const app = express();
 
 
-const cityLookup = maxmind.openSync(path.join(__dirname, "db/GeoLite2-City.mmdb"));
+const cityLookup = maxmind.openSync(path.join(__dirname, "GeoLite2-City.mmdb"));
 const corsOptions = {
   origin: "*", // allow all origins for testing
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
