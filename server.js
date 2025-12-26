@@ -1,9 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const { spawn } = require("child_process");
+const maxmind = require("maxmind");
 const path = require("path");
 const app = express();
 
+
+const cityLookup = maxmind.openSync(path.join(__dirname, "db/GeoLite2-City.mmdb"));
 const corsOptions = {
   origin: "*", // allow all origins for testing
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -33,20 +36,16 @@ sendDataToCppAndReceiveItAfterCppOperation(cppFile, {
 app.get("/get-ip", async (req, res) => {
   try{
     const ip = req.ip ;
-    const loc = await fetch(`https://ipapi.co/${ip}/json/`);
-    console.log(loc);
-    if(!loc.ok){
-      console.log("Geo Ip request failed : ",loc.status,loc.statusText);
-      return ;
-    }
-    const data = await loc.json();
-    const city = data.city;
-    const contry = data.country_name ;
+    const geo = cityLookup.get(ip);
+
+    const city = geo?.city?.names?.en || "Unknown";
+    const country = geo?.country?.names?.en || "Unknown";
+
     console.log("Log In detected User Ip Adress : "+ip);
-    console.log("User Contry : "+contry);
+    console.log("User Contry : "+country);
     console.log("User city : "+city);}
   catch(err){
-    console.log("Geo Ip Error : ",err);
+    console.log("GeoIP Error : ",err);
   }
 });
 
