@@ -420,6 +420,7 @@ namespace timeLineCSV
         }
 
         string line;
+        cerr<<"PrintCSV order"<<endl;
         cerr<< "=================== " + filename + " ==================="<<endl ;
         while (std::getline(file, line)) {
             cerr << line << endl;

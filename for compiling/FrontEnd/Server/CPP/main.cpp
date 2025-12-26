@@ -440,7 +440,7 @@ int main()
     else if(command == "Save User Full Name"){
         string name = j["object"]["Name"].get<string>();
         string lastName = j["object"]["LastName"].get<string>();
-        string fullName = name + " " + lastName ;
+        string fullName = name + "," + lastName ;
         timeLineCSV::addLine("UsersNames.csv",fullName);
         timeLineCSV::printCSV("UsersNames.csv");
 
